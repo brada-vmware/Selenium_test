@@ -5,7 +5,7 @@ var driver = new webdriver.Builder().
    withCapabilities(webdriver.Capabilities.firefox()).
    build();
 
-driver.get('http://www.google.com/');
+driver.get(process.argv[2]);
 
 driver.getTitle().then(function(title) {
   driver.getPageSource().then(function(html) {
