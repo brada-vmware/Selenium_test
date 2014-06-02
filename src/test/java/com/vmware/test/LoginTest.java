@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -21,6 +22,7 @@ public class LoginTest extends AbstractTest {
 
     @Test
     public void testLogin() {
+        WebDriver driver = getDriver();
         driver.get(testUrl);
 
         // fill and submit the login form

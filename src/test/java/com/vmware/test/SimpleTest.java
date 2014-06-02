@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -19,7 +20,8 @@ public class SimpleTest extends AbstractTest {
 
     @Test
     public void testLoginPageMessage() {
-        this.driver.get(testUrl);
+        WebDriver driver = getDriver();
+        driver.get(testUrl);
         WebElement paragraphElement = driver.findElement(By.tagName("p"));
         assertNotNull("paragraphElement is null", paragraphElement);
         assertEquals(messageToVerify, paragraphElement.getText());
