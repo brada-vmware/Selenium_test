@@ -3,6 +3,8 @@
  */
 package com.vmware.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
@@ -11,7 +13,9 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -21,11 +25,21 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class SimpleTest {
     private WebDriver driver;
 
-    private final String seleniumServerUrl = System.getProperty("selenium.server.url"); //"http://10.152.32.25:4444/wd/hub";
-    private final String testUrl = System.getProperty("selenium.test.url.SimpletTest"); //"http://www.google.com";
+    private String seleniumServerUrl;
+    private String testUrl;
+    private final String messageToVerify = "Please enter your customer ID and password (e.g. \"200/j2ee\") and click Submit.";
 
     @Before
     public void setUp() throws Exception {
+        this.seleniumServerUrl = initProperty("selenium.server.url", "http://10.152.32.25:4444/wd/hub");
+        this.testUrl = initProperty("selenium.test.url.SimpleTest", "http://10.152.32.35:8081/bank/main");
+
+        assertNotNull("seleniumServerSetUrl is null. Please set system property selenium.server.url, "
+                    + "e.g.: -Dselenium.server.url=http://10.152.32.25:4444/wd/hub", testUrl);
+
+        assertNotNull("testUrl is null. Please set system property selenium.test.url.SimpleTest, "
+                + "e.g.: -Dselenium.server.url=http://10.152.32.25:4444/wd/hub", testUrl);
+
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
         this.driver = new RemoteWebDriver(
@@ -42,6 +56,24 @@ public class SimpleTest {
     @Test
     public void test() {
         this.driver.get(testUrl);
-        assertEquals("Google", this.driver.getTitle());
+        WebElement paragraphElement = driver.findElement(By.tagName("p"));
+        assertNotNull("paragraphElement is null", paragraphElement);
+        assertEquals(messageToVerify, paragraphElement.getText());
+    }
+
+    /**
+     *
+     * @param propName
+     * @param exampleValue
+     * @return
+     */
+    private String initProperty(String propName, String exampleValue) {
+        String prop = System.getProperty(propName);
+        String message = String.format("Required property is null. Please set system property %s"
+                + ", e.g.: -D%s=%s", propName, propName, exampleValue);
+
+        assertNotNull(message, prop);
+
+        return prop;
     }
 }
