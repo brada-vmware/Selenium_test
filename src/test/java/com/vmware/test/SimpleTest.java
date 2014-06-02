@@ -34,12 +34,6 @@ public class SimpleTest {
         this.seleniumServerUrl = initProperty("selenium.server.url", "http://10.152.32.25:4444/wd/hub");
         this.testUrl = initProperty("selenium.test.url.SimpleTest", "http://10.152.32.35:8081/bank/main");
 
-        assertNotNull("seleniumServerSetUrl is null. Please set system property selenium.server.url, "
-                    + "e.g.: -Dselenium.server.url=http://10.152.32.25:4444/wd/hub", testUrl);
-
-        assertNotNull("testUrl is null. Please set system property selenium.test.url.SimpleTest, "
-                + "e.g.: -Dselenium.server.url=http://10.152.32.25:4444/wd/hub", testUrl);
-
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
         this.driver = new RemoteWebDriver(
@@ -54,7 +48,7 @@ public class SimpleTest {
     }
 
     @Test
-    public void test() {
+    public void testLoginPageMessage() {
         this.driver.get(testUrl);
         WebElement paragraphElement = driver.findElement(By.tagName("p"));
         assertNotNull("paragraphElement is null", paragraphElement);
