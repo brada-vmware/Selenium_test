@@ -3,7 +3,22 @@
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>dukes.bank.ip</name>
+          <description>IP Address for Duke&apos;s Bank</description>
+          <defaultValue>10.152.32.35</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>selenium.server.ip</name>
+          <description></description>
+          <defaultValue>10.152.32.25</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@2.0.2">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
@@ -30,7 +45,7 @@
     <groupId>com.vmware</groupId>
     <artifactId>tests</artifactId>
   </rootModule>
-  <goals>-Dselenium.server.url=http://10.152.32.25:4444/wd/hub -Dselenium.test.url.SimpleTest=http://10.152.32.35:8081/bank/main clean test</goals>
+  <goals>-Dselenium.server.url=http://${selenium.server.ip}:4444/wd/hub -Dselenium.test.url.SimpleTest=http://${dukes.bank.ip}:8081/bank/main clean test</goals>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>false</incrementalBuild>
   <ignoreUpstremChanges>false</ignoreUpstremChanges>
