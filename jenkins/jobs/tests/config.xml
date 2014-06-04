@@ -64,7 +64,13 @@
   <settings class="jenkins.mvn.DefaultSettingsProvider"/>
   <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
   <reporters/>
-  <publishers/>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>target/surefire-reports/*.png</artifacts>
+      <latestOnly>false</latestOnly>
+      <allowEmptyArchive>false</allowEmptyArchive>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
   <buildWrappers>
     <com.lookout.jenkins.EnvironmentScript plugin="environment-script@1.1.2">
       <script>jrunscript -e &quot;for each (var node in $deploymentResponse.deploymentNodeResponses) { println(&apos;node_&apos; + node.name + &apos;=&apos; + node.ipAddresses[0].ipAddress); }&quot;</script>
