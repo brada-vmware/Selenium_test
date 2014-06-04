@@ -10,15 +10,22 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Rule;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 /**
  * Abstract base class for tests
  */
-@ContextConfiguration
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 abstract public class AbstractTest extends AbstractJUnit4SpringContextTests {
+    @Configuration
+    protected static class AbstracTestConfig {
+
+    }
+
     @Rule
     public SeleniumDriverRule seleniumDriverRule;
 
