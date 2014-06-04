@@ -3,19 +3,35 @@
  */
 package com.vmware.test;
 
+import javax.annotation.PostConstruct;
+
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Rule;
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 /**
  * Abstract base class for tests
  */
-abstract public class AbstractTest {
+@ContextConfiguration
+abstract public class AbstractTest extends AbstractJUnit4SpringContextTests {
     @Rule
-    public SeleniumDriverRule seleniumDriverRule = new SeleniumDriverRule(initProperty("selenium.server.url", "http://10.152.32.25:4444/wd/hub"));
+    public SeleniumDriverRule seleniumDriverRule;
 
-    protected String testUrl = initProperty("selenium.test.url.SimpleTest", "http://10.152.32.35:8081/bank/main");
+    @Autowired
+    private Environment environment;
+
+    protected String testUrl;
+
+    @PostConstruct
+    public void afterPropertiesSet() {
+        seleniumDriverRule = new SeleniumDriverRule(initProperty("selenium.server.url", "http://10.152.32.25:4444/wd/hub"));
+        testUrl = initProperty("selenium.test.url.SimpleTest", "http://10.152.32.28:8080/bank/main");
+    }
 
    /**
     *
@@ -24,7 +40,7 @@ abstract public class AbstractTest {
     * @return
     */
    protected String initProperty(String propName, String exampleValue) {
-       String prop = System.getProperty(propName);
+       String prop = environment.getProperty(propName);
        String message = String.format("Required property is null. Please set system property %s"
                + ", e.g.: -D%s=%s", propName, propName, exampleValue);
 
