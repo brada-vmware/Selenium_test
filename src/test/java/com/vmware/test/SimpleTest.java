@@ -4,44 +4,27 @@
 package com.vmware.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * Simple test
  */
-public class SimpleTest {
-    private WebDriver driver;
+public class SimpleTest extends AbstractTest {
+    private final String messageToVerify = "Please enter your customer ID and password (e.g. \"200/j2ee\") and click Submit.";
 
-    private final String seleniumServerUrl = System.getProperty("selenium.server.url"); //"http://10.152.32.25:4444/wd/hub";
-    private final String testUrl = System.getProperty("selenium.test.url.SimpletTest"); //"http://www.google.com";
-
-    @Before
-    public void setUp() throws Exception {
-        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-
-        this.driver = new RemoteWebDriver(
-                new URL(seleniumServerUrl), capabilities);
-
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        this.driver.quit();
-    }
 
     @Test
-    public void test() {
-        this.driver.get(testUrl);
-        assertEquals("Google", this.driver.getTitle());
+    public void testLoginPageMessage() {
+        WebDriver driver = getDriver();
+        driver.get(testUrl);
+        WebElement paragraphElement = driver.findElement(By.tagName("p"));
+        assertNotNull("paragraphElement is null", paragraphElement);
+        assertEquals(messageToVerify, paragraphElement.getText());
     }
+
 }
